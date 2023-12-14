@@ -45,7 +45,7 @@ typedef struct init_db_func_ptr_s {
  * * void *target_conn   - target connection (same logic as host_conn)
  */
 struct db_t {
-	postgres_t *pg_conf;
+	config_t *conf;
 
 	void *host_conn;
 	void *target_conn;

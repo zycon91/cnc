@@ -22,9 +22,11 @@ int construct_pg()
 {
 	printf("construct\n");
 	struct db_t *pg_db_t = malloc(sizeof(struct db_t *));
+	pg_db_t->conf = malloc(sizeof(config_t));
 
-	pg_db_t->pg_conf = (postgres_t *)malloc(sizeof(postgres_t));
-	memcpy(pg_db_t->pg_conf, yaml_config->postgres_config,
+	pg_db_t->conf->postgres_config =
+		(postgres_t *)malloc(sizeof(postgres_t));
+	memcpy(pg_db_t->conf->postgres_config, yaml_config->postgres_config,
 	       sizeof(postgres_t));
 
 	pg_db_ops.db = pg_db_t;
@@ -36,16 +38,17 @@ int construct_pg()
 int connect_pg(struct db_t *pg_db_t)
 {
 	printf("connect\n");
-	printf("%s\n", pg_db_t->pg_conf->origin_host);
-	printf("%s\n", pg_db_t->pg_conf->origin_user);
-	printf("%s\n", pg_db_t->pg_conf->origin_password);
+	/* printf("%s\n", pg_db_t->pg_conf->origin_host); */
+	/* printf("%s\n", pg_db_t->pg_conf->origin_user); */
+	/* printf("%s\n", pg_db_t->pg_conf->origin_password); */
 	return 0;
 }
 
 void close_pg(struct db_t *pg_db_t)
 {
 	printf("close\n");
-	free(pg_db_t->pg_conf);
+	free(pg_db_t->conf->postgres_config);
+	free(pg_db_t->conf);
 }
 
 int replicate(struct db_t *pg_db_t, struct options *pg_options)
