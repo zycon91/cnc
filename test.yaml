@@ -10,5 +10,22 @@ postgres:
   target_host: "localhost"
   target_user: "postgres"
   target_password: "password"
-  target_port: "5432"
+  target_port: "5433"
   target_database: "postgres"
+
+mongo:
+  enabled: true
+
+  origin_host: "localhost"
+  origin_user: "root"
+  origin_password: "root"
+  origin_port: "27017"
+  origin_database: "admin"
+
+  target_host: "localhost"
+  target_user: "root"
+  target_password: "root"
+  target_port: "27018"
+  target_database: "admin"
+
+  # "mongodb://root:root@localhost:27017/admin"
