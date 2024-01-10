@@ -5,28 +5,27 @@
 #include <stdbool.h>
 
 #define MAX_AVAILABLE_DBS 10
-
 typedef int (*init_db_func)(void);
 
 typedef struct init_db_func_ptr_s {
 	init_db_func func;
 } init_db_func_ptr_t;
 
-#define ADD_FUNC(init_func)                                  \
-	static init_db_func_ptr_t ptr_##init_func            \
-		__attribute((used, section("my_array"))) = { \
-			.func = init_func,                   \
+#define ADD_FUNC(init_func)                                             \
+	static init_db_func_ptr_t ptr_##init_func                       \
+		__attribute__((used, section("init_db_functions"))) = { \
+			.func = init_func,                              \
 		}
 
-#define section_foreach_entry(section_name, type_t, elem)  \
-	for (type_t *elem = ({                             \
-		     extern type_t __start_##section_name; \
-		     &__start_##section_name;              \
-	     });                                           \
-	     elem != ({                                    \
-		     extern type_t __stop_##section_name;  \
-		     &__stop_##section_name;               \
-	     });                                           \
+#define section_foreach_entry(elem)                                       \
+	for (init_db_func_ptr_t *elem = ({                                \
+		     extern init_db_func_ptr_t __start_init_db_functions; \
+		     &__start_init_db_functions;                          \
+	     });                                                          \
+	     elem != ({                                                   \
+		     extern init_db_func_ptr_t __stop_init_db_functions;  \
+		     &__stop_init_db_functions;                           \
+	     });                                                          \
 	     ++elem)
 
 /* TODO: Later on when we are going to support */
